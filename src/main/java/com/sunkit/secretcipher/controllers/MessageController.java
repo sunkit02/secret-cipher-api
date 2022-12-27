@@ -1,24 +1,21 @@
 package com.sunkit.secretcipher.controllers;
 
 import com.sunkit.secretcipher.expections.UserNotFoundException;
-import com.sunkit.secretcipher.models.message.Message;
 import com.sunkit.secretcipher.models.message.MessageDTO;
-import com.sunkit.secretcipher.payloads.requests.SendNewMessageRequest;
-import com.sunkit.secretcipher.payloads.websocket.NewMessageDTO;
+import com.sunkit.secretcipher.models.payloads.requests.SendNewMessageRequest;
+import com.sunkit.secretcipher.models.payloads.websocket.NewMessageDTO;
 import com.sunkit.secretcipher.services.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
+@CrossOrigin(originPatterns = "*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/message")
+@RequestMapping("api/messages")
 public class MessageController {
 
     private final SimpMessagingTemplate template;

@@ -1,11 +1,10 @@
 package com.sunkit.secretcipher.services;
 
 import com.sunkit.secretcipher.expections.UserNotFoundException;
-import com.sunkit.secretcipher.models.message.KeyType;
 import com.sunkit.secretcipher.models.message.Message;
 import com.sunkit.secretcipher.models.message.MessageDTO;
+import com.sunkit.secretcipher.models.payloads.requests.SendNewMessageRequest;
 import com.sunkit.secretcipher.models.user.User;
-import com.sunkit.secretcipher.payloads.requests.SendNewMessageRequest;
 import com.sunkit.secretcipher.repos.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ public class MessageService {
         return sendNewMessage(
                 request.senderUsername(),
                 request.recipientUsername(),
-                request.keyType(),
                 request.key(),
                 request.message());
     }
@@ -31,7 +29,6 @@ public class MessageService {
     public MessageDTO sendNewMessage(
             String senderUsername,
             String recipientUsername,
-            KeyType keytype,
             String key,
             String messagePayload) throws UserNotFoundException {
 
@@ -41,7 +38,6 @@ public class MessageService {
         Message message = Message.builder()
                 .sender(sender)
                 .recipient(recipient)
-                .keyType(keytype)
                 .encodingKey(key)
                 .message(messagePayload)
                 .timeSent(new Timestamp(System.currentTimeMillis()))

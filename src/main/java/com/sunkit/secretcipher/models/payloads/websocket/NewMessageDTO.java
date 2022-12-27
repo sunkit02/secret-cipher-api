@@ -1,13 +1,11 @@
-package com.sunkit.secretcipher.payloads.websocket;
+package com.sunkit.secretcipher.models.payloads.websocket;
 
 import com.sunkit.secretcipher.models.message.MessageDTO;
 import lombok.Getter;
 
-import static com.sunkit.secretcipher.payloads.websocket.PayloadType.NEW_MESSAGE;
-
 @Getter
 public class NewMessageDTO {
-    private final PayloadType type = NEW_MESSAGE;
+    private final PayloadType type = PayloadType.NEW_MESSAGE;
     private final MessageDTO payload;
 
     public NewMessageDTO(MessageDTO newMessage) {

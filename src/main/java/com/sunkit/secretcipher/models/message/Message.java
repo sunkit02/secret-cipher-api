@@ -26,8 +26,6 @@ public class Message {
     private Long id;
     @Builder.Default
     private final String encodingKey = "";
-    @Builder.Default
-    private final KeyType keyType = KeyType.NUM_ARRAY;
     @NotBlank(message = "Message content cannot be blank")
     @Builder.Default
     private final String message = "";
@@ -38,7 +36,7 @@ public class Message {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(
-            name = "senter_id",
+            name = "sender_id",
             referencedColumnName = "user_id",
             nullable = false
     )
