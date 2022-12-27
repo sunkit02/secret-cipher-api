@@ -46,7 +46,5 @@ public class MessageService {
         messageRepository.save(message);
 
         return MessageDTO.of(message);
-//        sender.getMessagesSent().add(message);
-//        recipient.getMessagesReceived().add(message);
     }
 }
