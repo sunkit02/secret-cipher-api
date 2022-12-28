@@ -26,6 +26,8 @@ public class Message {
     private Long id;
     @Builder.Default
     private final String encodingKey = "";
+    @Builder.Default
+    private final String subject = "Subject: blank";
     @NotBlank(message = "Message content cannot be blank")
     @Builder.Default
     private final String message = "";

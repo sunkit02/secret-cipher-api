@@ -4,5 +4,6 @@ public record SendNewMessageRequest(
         String senderUsername,
         String recipientUsername,
         String key,
+        String subject,
         String message
 ) {}

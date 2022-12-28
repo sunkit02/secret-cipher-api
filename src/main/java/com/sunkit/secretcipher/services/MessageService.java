@@ -23,6 +23,7 @@ public class MessageService {
                 request.senderUsername(),
                 request.recipientUsername(),
                 request.key(),
+                request.subject(),
                 request.message());
     }
 
@@ -30,6 +31,7 @@ public class MessageService {
             String senderUsername,
             String recipientUsername,
             String key,
+            String subject,
             String messagePayload) throws UserNotFoundException {
 
         User sender = userService.findByUsername(senderUsername);
@@ -39,6 +41,7 @@ public class MessageService {
                 .sender(sender)
                 .recipient(recipient)
                 .encodingKey(key)
+                .subject(subject.isBlank() ? "Subject: blank" : subject.trim())
                 .message(messagePayload)
                 .timeSent(new Timestamp(System.currentTimeMillis()))
                 .build();
