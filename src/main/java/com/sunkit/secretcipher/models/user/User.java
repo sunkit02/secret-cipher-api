@@ -2,6 +2,7 @@ package com.sunkit.secretcipher.models.user;
 
 import com.sunkit.secretcipher.models.message.Message;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -32,9 +33,12 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Length(min = 8, max = 50, message = "Password must b e between 8 and 50 characters.")
     @NotNull(message = "Password cannot be empty.")
+    @Column(length = 60, nullable = false)
     private String password;
+
+    @Email(message = "Must be a valid email address")
+    @Column(unique = true)
     private String email;
 
     @OneToMany(

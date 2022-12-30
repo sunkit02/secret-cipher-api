@@ -22,6 +22,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         for (ConstraintViolation<?> violation: e.getConstraintViolations()) {
             errors.add(violation.getMessage());
         }
-        return ResponseEntity.badRequest().body(errors.toString());
+        StringBuilder errorMessageBuilder = new StringBuilder();
+        for (int i = 0; i < errors.size(); i++) {
+            errorMessageBuilder.append(
+                    String.format("%s. %s\n", i + 1, errors.get(i)));
+        }
+
+        return ResponseEntity.badRequest().body(errorMessageBuilder.toString());
     }
 }
