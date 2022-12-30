@@ -32,6 +32,7 @@ public class UserController {
                     .badRequest()
                     .body(e.getMessage());
         }
+        log.info("Messages sent by user '{}': {}", request.username(), sentMessages);
 
         return ResponseEntity.ok(sentMessages);
     }

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.hibernate.validator.constraints.Length;
 
 import java.sql.Timestamp;
 
@@ -24,12 +25,17 @@ public class Message {
     @Column(name = "message_id", nullable = false)
     @JdbcTypeCode(SqlTypes.BIGINT)
     private Long id;
+    @Length(max = 255, message = "The key must not exceed 255 characters")
     @Builder.Default
     private final String encodingKey = "";
+    @Length(max = 255, message = "The subject must not exceed 255 characters")
     @Builder.Default
     private final String subject = "Subject: blank";
+
+    @Length(max = 1000, message = "Message content must not exceed 1,000 characters")
     @NotBlank(message = "Message content cannot be blank")
     @Builder.Default
+    @Column(length = 1000)
     private final String message = "";
 
     @NotNull
