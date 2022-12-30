@@ -23,7 +23,8 @@ public class SecretCipherApiApplication {
                     .password("password")
                     .email("sunkit@scipher.com")
                     .build();
-            userRepository.save(user);
+            if (!userRepository.existsByUsername(user.getUsername()))
+                userRepository.save(user);
         };
     }
 }
