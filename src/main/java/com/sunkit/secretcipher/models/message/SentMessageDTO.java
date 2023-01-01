@@ -2,7 +2,7 @@ package com.sunkit.secretcipher.models.message;
 
 import java.sql.Timestamp;
 
-public record MessageDTO(
+public record SentMessageDTO(
         Long id,
         String senderUsername,
         String recipientUsername,
@@ -11,8 +11,8 @@ public record MessageDTO(
         String message,
         Timestamp timeSent
 ) {
-    public static MessageDTO of(Message message) {
-        return new MessageDTO(
+    public static SentMessageDTO of(Message message) {
+        return new SentMessageDTO(
                 message.getId(),
                 message.getSender().getUsername(),
                 message.getRecipient().getUsername(),

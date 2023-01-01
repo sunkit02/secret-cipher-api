@@ -35,8 +35,11 @@ public class Message {
     @Length(max = 1000, message = "Message content must not exceed 1,000 characters")
     @NotBlank(message = "Message content cannot be blank")
     @Builder.Default
-    @Column(length = 1000)
+    @Column(length = 1000, nullable = false)
     private final String message = "";
+
+    @Column(length = 1200, nullable = false)
+    private String encodedMessage;
 
     @NotNull
     @Builder.Default

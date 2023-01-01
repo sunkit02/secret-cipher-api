@@ -1,7 +1,9 @@
 package com.sunkit.secretcipher.controllers;
 
 import com.sunkit.secretcipher.expections.UserNotFoundException;
-import com.sunkit.secretcipher.models.message.MessageDTO;
+import com.sunkit.secretcipher.models.dtos.ReceivedMessageDTO;
+import com.sunkit.secretcipher.models.message.SentMessageDTO;
+import com.sunkit.secretcipher.models.payloads.requests.GetReceivedMessagesRequest;
 import com.sunkit.secretcipher.models.payloads.requests.GetSentMessagesRequest;
 import com.sunkit.secretcipher.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,18 +25,37 @@ public class UserController {
     @PostMapping("/sent-messages")
     public ResponseEntity<?> getSentMessages(
             @RequestBody GetSentMessagesRequest request) {
-        List<MessageDTO> sentMessages;
+        log.info("User '{}' is fetching all sent messages", request.username());
+        List<SentMessageDTO> sentMessages;
         try {
             sentMessages = userService.getSentMessages(request.username());
 
         } catch (UserNotFoundException e) {
+            log.error("Error fetching sent messages for user '{}': {}",
+                    request.username(), e.getMessage());
             return ResponseEntity
                     .badRequest()
                     .body(e.getMessage());
         }
-        log.info("Messages sent by user '{}': {}", request.username(), sentMessages);
 
         return ResponseEntity.ok(sentMessages);
+    }
+
+    @PostMapping("/received-messages")
+    public ResponseEntity<?> getReceivedMessages(
+            @RequestBody GetReceivedMessagesRequest request) {
+        log.info("User '{}' is fetching all received messages", request.username());
+        List<ReceivedMessageDTO> receivedMessages;
+        try {
+            receivedMessages = userService.getReceivedMessages(request.username());
+        } catch (UserNotFoundException e) {
+            log.error("Error fetching received messages for user '{}': {}",
+                    request.username(), e.getMessage());
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+        return ResponseEntity.ok(receivedMessages);
     }
 
 }

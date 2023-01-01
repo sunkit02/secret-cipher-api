@@ -2,7 +2,8 @@ package com.sunkit.secretcipher.services;
 
 import com.sunkit.secretcipher.expections.UserNotFoundException;
 import com.sunkit.secretcipher.expections.UserRegistrationException;
-import com.sunkit.secretcipher.models.message.MessageDTO;
+import com.sunkit.secretcipher.models.dtos.ReceivedMessageDTO;
+import com.sunkit.secretcipher.models.message.SentMessageDTO;
 import com.sunkit.secretcipher.models.user.User;
 import com.sunkit.secretcipher.repos.MessageRepository;
 import com.sunkit.secretcipher.repos.UserRepository;
@@ -62,15 +63,22 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public List<MessageDTO> getSentMessages(String username) throws UserNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(String.format(
-                        "User with username '%s' not found", username)));
+    public List<SentMessageDTO> getSentMessages(String username) throws UserNotFoundException {
+        User user = findByUsername(username);
         return messageRepository.findAllBySenderOrderByTimeSentDesc(user)
                 .stream()
-                .map(MessageDTO::of)
+                .map(SentMessageDTO::of)
                 .toList();
     }
+
+    public List<ReceivedMessageDTO> getReceivedMessages(String username) throws UserNotFoundException {
+        User user = findByUsername(username);
+        return messageRepository.findAllBySenderOrderByTimeSentDesc(user)
+                .stream()
+                .map(ReceivedMessageDTO::of)
+                .toList();
+    }
+
 
     private String compileErrorMessages(List<String> errorMessages) {
         StringBuilder errorMessageBuilder = new StringBuilder();

@@ -1,7 +1,7 @@
 package com.sunkit.secretcipher.controllers;
 
 import com.sunkit.secretcipher.expections.UserNotFoundException;
-import com.sunkit.secretcipher.models.message.MessageDTO;
+import com.sunkit.secretcipher.models.message.SentMessageDTO;
 import com.sunkit.secretcipher.models.payloads.requests.SendNewMessageRequest;
 import com.sunkit.secretcipher.models.payloads.websocket.NewMessageDTO;
 import com.sunkit.secretcipher.services.MessageService;
@@ -28,7 +28,7 @@ public class MessageController {
 
         log.info("Handling request: {}", request);
 
-        MessageDTO newMessage;
+        SentMessageDTO newMessage;
         try {
             newMessage = messageService.sendNewMessage(request);
         } catch (UserNotFoundException e) {

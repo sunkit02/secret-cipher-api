@@ -1,6 +1,6 @@
 package com.sunkit.secretcipher.models.dtos;
 
-import com.sunkit.secretcipher.models.message.MessageDTO;
+import com.sunkit.secretcipher.models.message.SentMessageDTO;
 import com.sunkit.secretcipher.models.user.User;
 
 import java.util.List;
@@ -8,19 +8,19 @@ import java.util.List;
 public record UserDTO(
         String username,
         String email,
-        List<MessageDTO> messagesSent,
-        List<MessageDTO> messagesReceived
+        List<SentMessageDTO> messagesSent,
+        List<SentMessageDTO> messagesReceived
 ) {
 
     public static UserDTO of(User user) {
-        List<MessageDTO> messagesSent = user.getMessagesSent()
+        List<SentMessageDTO> messagesSent = user.getMessagesSent()
                 .stream()
-                .map(MessageDTO::of)
+                .map(SentMessageDTO::of)
                 .toList();
 
-        List<MessageDTO> messagesReceived = user.getMessagesReceived()
+        List<SentMessageDTO> messagesReceived = user.getMessagesReceived()
                 .stream()
-                .map(MessageDTO::of)
+                .map(SentMessageDTO::of)
                 .toList();
 
         return new UserDTO(
