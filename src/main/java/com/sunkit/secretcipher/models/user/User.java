@@ -1,6 +1,7 @@
 package com.sunkit.secretcipher.models.user;
 
 import com.sunkit.secretcipher.models.message.Message;
+import com.sunkit.secretcipher.security.auth.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -56,4 +57,8 @@ public class User {
     )
     @Builder.Default
     private Set<Message> messagesReceived = new HashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private UserRole role = UserRole.USER;
 }

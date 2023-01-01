@@ -1,19 +1,17 @@
 package com.sunkit.secretcipher.services;
 
-import com.sunkit.secretcipher.expections.CustomConstraintViolation;
 import com.sunkit.secretcipher.expections.UserNotFoundException;
+import com.sunkit.secretcipher.expections.UserRegistrationException;
 import com.sunkit.secretcipher.models.message.MessageDTO;
 import com.sunkit.secretcipher.models.user.User;
 import com.sunkit.secretcipher.repos.MessageRepository;
 import com.sunkit.secretcipher.repos.UserRepository;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,15 +29,15 @@ public class UserService {
 
     public User registerNewUser(String username,
                                 String password,
-                                String email) {
-        
+                                String email) throws UserRegistrationException {
+
         List<String> errorMessages = new ArrayList<>();
 
         if (userRepository.existsByUsername(username)) {
             errorMessages.add("Username '" + username + "' already taken");
         }
 
-        if (email != null && userRepository.existsByEmail(email)) {
+        if (email != null && (!email.isBlank() && userRepository.existsByEmail(email))) {
             errorMessages.add("Email '" + email + "' already taken");
         }
 
@@ -49,7 +47,11 @@ public class UserService {
             errorMessages.add("Password must be between 8 and 50 characters");
         }
 
-        throwConstraintViolationExceptionsIfAny(errorMessages);
+        if (!errorMessages.isEmpty()) {
+            throw new UserRegistrationException(compileErrorMessages(errorMessages));
+        }
+
+        if (email != null && email.isBlank()) email = null;
 
         User newUser = User.builder()
                 .username(username)
@@ -70,14 +72,12 @@ public class UserService {
                 .toList();
     }
 
-    private void throwConstraintViolationExceptionsIfAny(List<String> errorMessages) {
-        if (errorMessages.size() > 0) {
-            throw new ConstraintViolationException(
-                    errorMessages
-                            .stream()
-                            .map(CustomConstraintViolation::new)
-                            .collect(Collectors.toSet())
-            );
+    private String compileErrorMessages(List<String> errorMessages) {
+        StringBuilder errorMessageBuilder = new StringBuilder();
+        for (int i = 0; i < errorMessages.size(); i++) {
+            errorMessageBuilder.append(
+                    String.format("%s. %s\n", i + 1, errorMessages.get(i)));
         }
+        return errorMessageBuilder.toString();
     }
 }

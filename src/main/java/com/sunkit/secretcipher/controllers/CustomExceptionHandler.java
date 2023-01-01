@@ -2,6 +2,7 @@ package com.sunkit.secretcipher.controllers;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -28,6 +30,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                     String.format("%s. %s\n", i + 1, errors.get(i)));
         }
 
-        return ResponseEntity.badRequest().body(errorMessageBuilder.toString());
+        String errorMessages = errorMessageBuilder.toString();
+        log.error("Handling error with message: {}", errorMessages);
+
+        return ResponseEntity.badRequest().body(errorMessages);
     }
 }
