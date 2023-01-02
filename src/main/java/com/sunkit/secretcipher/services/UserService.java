@@ -65,7 +65,7 @@ public class UserService {
 
     public List<SentMessageDTO> getSentMessages(String username) throws UserNotFoundException {
         User user = findByUsername(username);
-        return messageRepository.findAllBySenderOrderByTimeSentDesc(user)
+        return messageRepository.findMessagesBySenderOrderByTimeSentDesc(user)
                 .stream()
                 .map(SentMessageDTO::of)
                 .toList();
@@ -73,7 +73,7 @@ public class UserService {
 
     public List<ReceivedMessageDTO> getReceivedMessages(String username) throws UserNotFoundException {
         User user = findByUsername(username);
-        return messageRepository.findAllBySenderOrderByTimeSentDesc(user)
+        return messageRepository.findMessagesByRecipientOrderByTimeSentDesc(user)
                 .stream()
                 .map(ReceivedMessageDTO::of)
                 .toList();
